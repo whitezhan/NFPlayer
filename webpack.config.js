@@ -3,10 +3,10 @@ var webpack = require('webpack');
 var uglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 module.exports = {
     cache: true,
-    entry: './src/lib/NFMusic.js',
+    entry: './src/lib/NFPlayer.js',
     output: {
         path: __dirname,
-        filename: './build/NFMusic.min.js',
+        filename: './build/NFPlayer.min.js',
     },
     module: {
         loaders: [
@@ -23,20 +23,15 @@ module.exports = {
                     {loader: 'css-loader', options: {importLoaders: 1}},
                     {loader: 'less-loader', options: {strictMath: true, noIeCompat: true}}
                 ]
-            }
+            },
+            {test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/, loader: 'url-loader?limit=50000&name=[path][name].[ext]'}
         ]
-    },
-    // babel: {
-    //     babelrc: false,
-    //     presets: [
-    //         ['es2015'],
-    //     ],
-    // },
-    plugins: [
-        new uglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        })
-    ]
+    }
+    // plugins: [
+    //     new uglifyJsPlugin({
+    //         compress: {
+    //             warnings: false
+    //         }
+    //     })
+    // ]
 };

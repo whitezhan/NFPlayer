@@ -2,14 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>NFMusic</title>
+    <title>NFPlayer</title>
 </head>
 <body>
 
-<script type="text/javascript" src="../../build/NFMusic.min.js"></script>
+<div id="NFPlayer" class="NFPlayer NFPlayerDefault">
+    <video id="NFPlayerVideo"></video>
+    <div id="NFPlayerCover" class="cover"></div>
+    <div class="progress" id="NFPlayerProgress">
+        <div class="bar" id="NFPlayerBar"></div>
+    </div>
+    <div class="button">
+        <label class="left"></label>
+        <label class="right"></label>
+    </div>
+    <div class="info">
+        <p class="title">好久不见</p>
+        <p class="author">陈奕迅</p>
+    </div>
+    <div class="switch">
+        <label class="action" id="NFPlayerSwitch"></label>
+        <label class="voice" id="NFPlayerVoice"></label>
+    </div>
+</div>
+
+<script type="text/javascript" src="../../build/NFPlayer.min.js"></script>
+<script type="text/javascript" src="../../src/music/music.js"></script>
 
 <script type="text/javascript">
-    var music = new NFMusic();
+    var music = new NFPlayer(NFMusicPro);
 </script>
 
 </body>
