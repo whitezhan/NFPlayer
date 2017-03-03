@@ -1,13 +1,43 @@
 .NFPlayer, .NFPlayer * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: border-box
 }
 
 .NFPlayer {
   position: fixed;
-  video{
-    display: none;
+  z-index: 1000;
+  video {
+    display: none !important;
+  }
+}
+
+.box-shadow(@style) {
+  -webkit-box-shadow: @style;
+  -moz-box-shadow: @style;
+  -ms-box-shadow: @style;
+  -o-box-shadow: @style;
+  box-shadow: @style;
+}
+
+.transition-duration(@n) {
+  -webkit-transition-duration: @n;
+  -moz-transition-duration: @n;
+  -ms-transition-duration: @n;
+  -o-transition-duration: @n;
+  transition-duration: @n;
+}
+
+.NFPlayerTree {
+  position: fixed;
+  bottom: 0;
+  left: 50px;
+  z-index: 999;
+  width: 72px;
+  height: 66px;
+  background-image: url("../images/tree.png");
+  &.hide {
+    opacity: 0;
   }
 }
 

@@ -1,13 +1,24 @@
+@font-face {
+  font-family: 'MI';
+  src: url('//cdn.webfont.youziku.com/webfonts/nomal/99006/47267/58b91b05f629d813bcf1d322.gif');
+  src: url('//cdn.webfont.youziku.com/webfonts/nomal/99006/47267/58b91b05f629d813bcf1d322.gif?#iefix') format('embedded-opentype'), url('//cdn.webfont.youziku.com/webfonts/nomal/99006/47267/58b91b05f629d813bcf1d322.bmp') format('woff'), url('//cdn.webfont.youziku.com/webfonts/nomal/99006/47267/58b91b05f629d813bcf1d322.jpg') format('truetype'), url('#MILANTING') format('svg');
+}
 
 .NFPlayerDefault {
-  left: 40px;
-  bottom: 40px;
+  left: -500px;
+  bottom: -500px;
   height: 220px;
   width: 320px;
-  box-shadow: -3px 3px 20px 0 #585351;
+  .box-shadow(-3px 3px 20px 0 #585351);
+  .transition-duration(.5s);
   * {
-    transition-duration: .5s;
-    font-family: "Microsoft YaHei UI";
+    .transition-duration(.5s);
+    font-family: "MI", "Microsoft YaHei UI";
+    font-weight: 100;
+  }
+  &.show {
+    left: 40px;
+    bottom: 40px;
   }
   .cover {
     height: 170px;
@@ -31,6 +42,7 @@
       float: left;
       height: 4px;
       background-color: #e73e4a;
+      .transition-duration(0s);
     }
   }
   .button {
@@ -74,6 +86,24 @@
     }
   }
 
+  .close {
+    display: inline-block;
+    position: absolute;
+    opacity: 0;
+    width: 50px;
+    height: 49px;
+    background-image: url("../images/def-c.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 12px auto;
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    &:hover {
+      opacity: 0.8 !important;
+    }
+  }
+
   .switch {
     opacity: 0;
     width: 100%;
@@ -90,12 +120,12 @@
       background-image: url("../images/def-action.png");
       background-repeat: no-repeat;
       background-position: center center;
-      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
       cursor: pointer;
       &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.1);
       }
-      &.stop{
+      &.stop {
         background-image: url("../images/def-stop.png");
       }
     }
@@ -107,20 +137,14 @@
       background-image: url("../images/def-y.png");
       background-repeat: no-repeat;
       background-position: center center;
-      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
       cursor: pointer;
       &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.1);
       }
-      &.stop{
+      &.stop {
         background-image: url("../images/def-m.png");
       }
-    }
-  }
-
-  &:hover {
-    .switch {
-      opacity: 1;
     }
   }
 
@@ -156,5 +180,16 @@
     }
   }
 
+  &:hover {
+    .switch {
+      opacity: 1;
+    }
+    .cover {
+      background-size: 105% auto;
+    }
+    .close {
+      opacity: 0.2;
+    }
+  }
 }
 

@@ -6,6 +6,7 @@
 </head>
 <body>
 
+<a href="javascript:;" id="NFPlayerTree" class="NFPlayerTree"></a>
 <div id="NFPlayer" class="NFPlayer NFPlayerDefault">
     <video id="NFPlayerVideo"></video>
     <div id="NFPlayerCover" class="cover"></div>
@@ -13,24 +14,25 @@
         <div class="bar" id="NFPlayerBar"></div>
     </div>
     <div class="button">
-        <label class="left"></label>
-        <label class="right"></label>
+        <label class="left" id="NFPlayerPerv"></label>
+        <label class="right" id="NFPlayerNext"></label>
     </div>
     <div class="info">
-        <p class="title">好久不见</p>
-        <p class="author">陈奕迅</p>
+        <p class="title" id="NFPlayerTitle"></p>
+        <p class="author" id="NFPlayerAuthor"></p>
     </div>
     <div class="switch">
         <label class="action" id="NFPlayerSwitch"></label>
         <label class="voice" id="NFPlayerVoice"></label>
     </div>
+    <label class="close" id="NFPlayerClose"></label>
 </div>
 
 <script type="text/javascript" src="../../build/NFPlayer.min.js"></script>
 <script type="text/javascript" src="../../src/music/music.js"></script>
 
 <script type="text/javascript">
-    var music = new NFPlayer(NFMusicPro);
+    var p = new NFPlayer(NFMusicPro);
 </script>
 
 </body>

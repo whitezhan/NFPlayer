@@ -13,49 +13,96 @@ let NFPlayer = class {
         this.Switchs = this.toThis();
         this.Progress = this.toThis();
         this.Voice = this.toThis();
+        this.Current = this.toThis(-2);
+        this.Max = this.toThis();
+        this.BNext = this.toThis();
+        this.BPrev = this.toThis();
+        this.Title = this.toThis();
+        this.Author = this.toThis();
+        this.Pattern = this.toThis();
+        this.Tree = this.toThis();
         html5 ? this.init(attr) : console.log('NOT IS HTML5 => NOT IE9+');
     }
 
-    toThis() {
-        return 'nf';
+    toThis(v) {
+        return v != null && v != undefined ? v : 'nf';
     }
 
-    //初始化
     init(attr = 'NFPlayer Error') {
-        if (attr === 'NFPlayer Error') {
-        } else {
-            this.MusicList = attr.NFPlayer;
-        }
+        this.setMusic(attr);
+        this.toPattern(attr.Pattern);
         this.Html();
         this.Code();
     };
 
+    toPattern(pat) {
+        if (pat === "random") {
+            this.Pattern = 'random';
+        } else {
+            this.Pattern = 'loop';
+        }
+    }
 
-    /**
-     * 设置音乐
-     * music:
-     * */
     setMusic(music) {
-
+        if (music === 'NFPlayer Error') {
+        } else {
+            this.MusicList = new Array();
+            for (let m of music.NFPlayer) {
+                if (m.musicUrl) {
+                    this.MusicList.push(m);
+                }
+            }
+            this.Max = this.MusicList.length;
+        }
     };
+
+    getRandom(max) {
+        let n = this.Current;
+        while (n == this.Current) {
+            n = (Math.random() * max).toFixed(0);
+            if (n == 0)
+                n = this.Current;
+        }
+        return n;
+    }
 
     //下一首
     Next() {
 
+        if (this.Max > 1 && this.Pattern === 'random') {
+            this.Current = this.getRandom(this.Max);
+            this.setUC();
+            return;
+        }
+
+        if (this.Max > 1) {
+            this.Current++;
+            if (this.Current > this.Max) {
+                this.Current = 1;
+            }
+            this.setUC();
+        }
     };
 
-    //上一首
     Prev() {
 
+        if (this.Max > 1 && this.Pattern === 'random') {
+            this.Current = this.getRandom(this.Max);
+            this.setUC();
+            return;
+        }
+
+        if (this.Max > 1) {
+            this.Current--;
+            if (this.Current == 0) {
+                this.Current = this.Max;
+            }
+            this.setUC();
+        }
     };
 
-    //暂停
-    Stop() {
-
-    };
-
-    //开始
     toSwitch() {
+        window.clearInterval(this.Interval);
         if (this.Video.paused) {
             this.toClassStop(this.Switchs, ' stop', 0);
             this.Video.play();
@@ -69,7 +116,6 @@ let NFPlayer = class {
         } else {
             this.toClassStop(this.Switchs, ' stop', 1);
             this.Video.pause();
-            window.clearInterval(this.Interval);
         }
     };
 
@@ -95,6 +141,19 @@ let NFPlayer = class {
                 this.toClassStop(this.Voice, ' stop', 0);
                 this.Video.muted = false;
             }
+        };
+        this.BNext.onclick = () => {
+            this.Next();
+        };
+        this.BPrev.onclick = () => {
+            this.Prev();
+        };
+        this.Video.addEventListener('ended', () => {
+            this.Next();
+        }, false);
+        this.Tree.onclick = () => {
+            this.toClassStop(this.Tree, ' hide', 1);
+            this.toClassStop(this.Main, ' show', 1);
         }
     }
 
@@ -102,11 +161,10 @@ let NFPlayer = class {
         if (!n) {
             o.className = o.className.replace(c, '');
         } else {
-            o.className += ' stop';
+            o.className += c;
         }
     }
 
-    //html生成
     Html() {
         // let body = document.body;
         // let thisPlayer = document.createElement('div');
@@ -114,8 +172,21 @@ let NFPlayer = class {
         // body.appendChild(thisPlayer);
     }
 
+    setUrl(num) {
+        this.Video.src = this.MusicList[num].musicUrl;
+    }
+
     setCover(num) {
         this.Cover.style.backgroundImage = "url('" + this.MusicList[num].cover + "')";
+    }
+
+    setUC() {
+        this.setUrl(this.Current - 1);
+        this.setCover(this.Current - 1);
+        this.Title.innerHTML = this.MusicList[this.Current - 1].title;
+        this.Author.innerHTML = this.MusicList[this.Current - 1].author;
+        this.toBarWidth(0);
+        this.toSwitch();
     }
 
     Code() {
@@ -126,25 +197,14 @@ let NFPlayer = class {
         this.Switchs = document.getElementById('NFPlayerSwitch');
         this.Progress = document.getElementById('NFPlayerProgress');
         this.Voice = document.getElementById('NFPlayerVoice');
-
-        this.Video.src = this.MusicList[0].musicUrl;
-        this.setCover(0);
-        this.toSwitch(0);
+        this.BNext = document.getElementById('NFPlayerNext');
+        this.BPrev = document.getElementById('NFPlayerPerv');
+        this.Title = document.getElementById('NFPlayerTitle');
+        this.Author = document.getElementById('NFPlayerAuthor');
+        this.Tree = document.getElementById('NFPlayerTree');
         this.toEvent();
-
-        // var num = 0;
-        // audio.addEventListener('ended', function () {
-        //
-        //     with (currentIndex == num) {
-        //         num = GetRandomNum(msrc.length);
-        //     }
-        //     currentIndex = num;
-        //     num = currentIndex;
-        //     audio.src = msrc[currentIndex];
-        //     btn.attr("title", mlist[currentIndex]);
-        //     Song();
-        // }, false);
-
+        this.Current = this.getRandom(this.Max);
+        this.setUC();
     }
 
 };
