@@ -10,4 +10,4 @@ Click To Little Tree
 ![](http://ohhzjlczd.bkt.clouddn.com/NFPlayer.png)
 
 ----------------------
-[DEMO]()
+[DEMO](https://nesfe.github.io/NFPlayer/index.html)
