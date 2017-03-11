@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NFPlayer</title>
+    <style type="text/css">
+        *{
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+        .h2{
+            color:#0366d6;
+            padding-top: 20px;
+            font-size: 5rem;
+            text-align: center;
+            font-weight: 100;
+        }
+        .img{
+            text-align: center;
+        }
+    </style>
+</head>
+<body style="background-color: #fff">
+
+<h2 class="h2">
+    NFPlayer
+</h2>
+
+
+<script type="text/javascript" src="build/NFPlayer.min.js"></script>
+<script type="text/javascript" src="build/NFPlayer.music.js"></script>
+
+<script type="text/javascript">
+    // NFMusicPro is NFPlayer.music.js
+    var NFP = new NFPlayer(NFMusicPro);
+    console.log(NFP);
+
+
+</script>
+
+</body>
+</html>

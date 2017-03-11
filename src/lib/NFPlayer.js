@@ -5,13 +5,15 @@ const html5 = window.applicationCache ? true : false;
 let NFPlayer = class {
     constructor(attr) {
         this.Main = this.toThis();
+        this.MainTheme = this.toThis("Default");
         this.MusicList = this.toThis();
         this.Video = this.toThis();
         this.Cover = this.toThis();
         this.Interval = this.toThis();
-        this.Bar = this.toThis();
-        this.Switchs = this.toThis();
         this.Progress = this.toThis();
+        this.Bar = this.toThis();
+        this.BarBig = this.toThis();
+        this.Switchs = this.toThis();
         this.Voice = this.toThis();
         this.Current = this.toThis(-2);
         this.Max = this.toThis();
@@ -21,7 +23,9 @@ let NFPlayer = class {
         this.Author = this.toThis();
         this.Pattern = this.toThis();
         this.Tree = this.toThis();
+        this.Close = this.toThis();
         html5 ? this.init(attr) : console.log('NOT IS HTML5 => NOT IE9+');
+
     }
 
     toThis(v) {
@@ -29,11 +33,20 @@ let NFPlayer = class {
     }
 
     init(attr = 'NFPlayer Error') {
+        this.Main = document.createElement('div');
         this.setMusic(attr);
         this.toPattern(attr.Pattern);
+        this.toMainTheme(attr.Theme);
         this.Html();
         this.Code();
     };
+
+    toMainTheme(n) {
+        if (n) {
+            this.MainTheme = n;
+            this.Main.className = "NFPlayer NFPlayer" + this.MainTheme;
+        }
+    }
 
     toPattern(pat) {
         if (pat === "random") {
@@ -104,26 +117,45 @@ let NFPlayer = class {
     toSwitch() {
         window.clearInterval(this.Interval);
         if (this.Video.paused) {
-            this.toClassStop(this.Switchs, ' stop', 0);
+            this.toClass(this.Switchs, ' stop', 0);
             this.Video.play();
-            this.Interval = setInterval(() => {
-                let Percentage = (this.Video.currentTime / this.Video.duration * 100);
-                if (Percentage > 100) {
-                    Percentage = 100;
-                }
-                this.toBarWidth(Percentage);
-            }, 1000);
         } else {
-            this.toClassStop(this.Switchs, ' stop', 1);
+            this.toClass(this.Switchs, ' stop', 1);
             this.Video.pause();
         }
     };
 
     toBarWidth(bf) {
         this.Bar.style.width = bf.toFixed(2) + "%";
+        this.BarBig.style.width = bf.toFixed(2) + "%";
+    }
+
+    toMuted() {
+        if (!this.Video.muted) {
+            this.toClass(this.Voice, ' stop', 1);
+            this.Video.muted = true;
+        } else {
+            this.toClass(this.Voice, ' stop', 0);
+            this.Video.muted = false;
+        }
+    }
+
+    toHideTree(n) {
+        if (n) {
+            this.toClass(this.Tree, ' none', 1);
+        } else {
+            this.toClass(this.Tree, ' none', 0);
+        }
     }
 
     toEvent() {
+        this.Video.addEventListener("timeupdate", () => {
+            let Percentage = (this.Video.currentTime / this.Video.duration * 100);
+            if (Percentage > 100) {
+                Percentage = 100;
+            }
+            this.toBarWidth(Percentage);
+        });
         this.Switchs.onclick = () => {
             this.toSwitch();
         };
@@ -134,13 +166,7 @@ let NFPlayer = class {
             this.Video.currentTime = (x / w * this.Video.duration).toFixed(5);
         };
         this.Voice.onclick = () => {
-            if (!this.Video.muted) {
-                this.toClassStop(this.Voice, ' stop', 1);
-                this.Video.muted = true;
-            } else {
-                this.toClassStop(this.Voice, ' stop', 0);
-                this.Video.muted = false;
-            }
+            this.toMuted();
         };
         this.BNext.onclick = () => {
             this.Next();
@@ -152,24 +178,99 @@ let NFPlayer = class {
             this.Next();
         }, false);
         this.Tree.onclick = () => {
-            this.toClassStop(this.Tree, ' hide', 1);
-            this.toClassStop(this.Main, ' show', 1);
+            this.toMainShow();
+        };
+        this.Close.onclick = () => {
+            this.toMainHide();
         }
     }
 
-    toClassStop(o, c, n) {
+    toMainHide() {
+        this.toClass(this.Tree, ' hide', 0);
+        this.toClass(this.Main, ' show', 0);
+    }
+
+    toMainShow() {
+        this.toClass(this.Tree, ' hide', 1);
+        this.toClass(this.Main, ' show', 1);
+    }
+
+    toClass(o, c, n) {
         if (!n) {
             o.className = o.className.replace(c, '');
         } else {
-            o.className += c;
+            if (o.className.indexOf(c) === -1) {
+                o.className += c;
+            }
         }
     }
 
     Html() {
-        // let body = document.body;
-        // let thisPlayer = document.createElement('div');
-        // thisPlayer.id = 'thisMusic';
-        // body.appendChild(thisPlayer);
+        let body = document.body;
+        this.Tree = document.createElement('a');
+        this.Tree.setAttribute("href", "javascript:;");
+        this.Tree.className = "NFPlayerTree";
+        body.appendChild(this.Tree);
+
+
+        let NFPlayerProgress = document.createElement('div');
+        NFPlayerProgress.className = "NFPlayerProgress";
+        this.BarBig = document.createElement('div');
+        this.BarBig.className = "bar";
+        NFPlayerProgress.appendChild(this.BarBig);
+        body.appendChild(NFPlayerProgress);
+
+        this.Main.className = "NFPlayer NFPlayer" + this.MainTheme;
+
+        this.Video = document.createElement('audio');
+        this.Main.appendChild(this.Video);
+
+        this.Cover = document.createElement('div');
+        this.Cover.className = "cover";
+        this.Main.appendChild(this.Cover);
+
+        this.Progress = document.createElement('div');
+        this.Progress.className = "progress";
+        this.Bar = document.createElement('div');
+        this.Bar.className = "bar";
+        this.Progress.appendChild(this.Bar);
+        this.Main.appendChild(this.Progress);
+
+        let button = document.createElement('div');
+        button.className = "button";
+        this.BPrev = document.createElement('div');
+        this.BPrev.className = "left";
+        this.BNext = document.createElement('div');
+        this.BNext.className = "right";
+        button.appendChild(this.BPrev);
+        button.appendChild(this.BNext);
+        this.Main.appendChild(button);
+
+        let info = document.createElement('div');
+        info.className = "info";
+        this.Title = document.createElement('div');
+        this.Title.className = "title";
+        this.Author = document.createElement('div');
+        this.Author.className = "author";
+        info.appendChild(this.Title);
+        info.appendChild(this.Author);
+        this.Main.appendChild(info);
+
+        let switchDiv = document.createElement('div');
+        switchDiv.className = "switch";
+        this.Switchs = document.createElement('div');
+        this.Switchs.className = "action";
+        this.Voice = document.createElement('div');
+        this.Voice.className = "voice";
+        switchDiv.appendChild(this.Switchs);
+        switchDiv.appendChild(this.Voice);
+        this.Main.appendChild(switchDiv);
+
+        this.Close = document.createElement('label');
+        this.Close.className = "close";
+        this.Main.appendChild(this.Close);
+
+        body.appendChild(this.Main);
     }
 
     setUrl(num) {
@@ -190,18 +291,6 @@ let NFPlayer = class {
     }
 
     Code() {
-        this.Main = document.getElementById('NFPlayer');
-        this.Video = document.getElementById('NFPlayerVideo');
-        this.Cover = document.getElementById('NFPlayerCover');
-        this.Bar = document.getElementById('NFPlayerBar');
-        this.Switchs = document.getElementById('NFPlayerSwitch');
-        this.Progress = document.getElementById('NFPlayerProgress');
-        this.Voice = document.getElementById('NFPlayerVoice');
-        this.BNext = document.getElementById('NFPlayerNext');
-        this.BPrev = document.getElementById('NFPlayerPerv');
-        this.Title = document.getElementById('NFPlayerTitle');
-        this.Author = document.getElementById('NFPlayerAuthor');
-        this.Tree = document.getElementById('NFPlayerTree');
         this.toEvent();
         this.Current = this.getRandom(this.Max);
         this.setUC();

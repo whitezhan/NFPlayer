@@ -1,24 +1,19 @@
-@font-face {
-  font-family: 'MI';
-  src: url('//cdn.webfont.youziku.com/webfonts/nomal/99006/47267/58b91b05f629d813bcf1d322.gif');
-  src: url('//cdn.webfont.youziku.com/webfonts/nomal/99006/47267/58b91b05f629d813bcf1d322.gif?#iefix') format('embedded-opentype'), url('//cdn.webfont.youziku.com/webfonts/nomal/99006/47267/58b91b05f629d813bcf1d322.bmp') format('woff'), url('//cdn.webfont.youziku.com/webfonts/nomal/99006/47267/58b91b05f629d813bcf1d322.jpg') format('truetype'), url('#MILANTING') format('svg');
-}
 
 .NFPlayerDefault {
-  left: -500px;
-  bottom: -500px;
+  left: -370px;
+  bottom: -270px;
   height: 220px;
   width: 320px;
   .box-shadow(-3px 3px 20px 0 #585351);
   .transition-duration(.5s);
+  .transform(scale(0,0));
   * {
     .transition-duration(.5s);
-    font-family: "MI", "Microsoft YaHei UI";
-    font-weight: 100;
   }
   &.show {
     left: 40px;
     bottom: 40px;
+    .transform(scale(1,1));
   }
   .cover {
     height: 170px;
@@ -52,7 +47,7 @@
     position: absolute;
     bottom: -1px;
     left: 0;
-    background-image: url("../images/def-hr.png");
+    background-image: url("../images/default/def-hr.png");
     background-repeat: repeat-x;
     border-top: 1px solid #393a3b;
     overflow: hidden;
@@ -61,7 +56,7 @@
       display: inline-block;
       width: 50px;
       height: 49px;
-      background-image: url("../images/def-left.png");
+      background-image: url("../images/default/def-left.png");
       background-repeat: no-repeat;
       background-position: center center;
       border-right: 1px solid #393a3b;
@@ -75,7 +70,7 @@
       display: inline-block;
       width: 50px;
       height: 49px;
-      background-image: url("../images/def-right.png");
+      background-image: url("../images/default/def-right.png");
       background-repeat: no-repeat;
       background-position: center center;
       border-left: 1px solid #393a3b;
@@ -92,7 +87,7 @@
     opacity: 0;
     width: 50px;
     height: 49px;
-    background-image: url("../images/def-c.png");
+    background-image: url("../images/default/def-c.png");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 12px auto;
@@ -117,7 +112,7 @@
       display: inline-block;
       width: 50px;
       height: 50px;
-      background-image: url("../images/def-action.png");
+      background-image: url("../images/default/def-action.png");
       background-repeat: no-repeat;
       background-position: center center;
       border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -126,7 +121,7 @@
         background-color: rgba(255, 255, 255, 0.1);
       }
       &.stop {
-        background-image: url("../images/def-stop.png");
+        background-image: url("../images/default/def-stop.png");
       }
     }
     .voice {
@@ -134,7 +129,7 @@
       display: inline-block;
       width: 50px;
       height: 50px;
-      background-image: url("../images/def-y.png");
+      background-image: url("../images/default/def-y.png");
       background-repeat: no-repeat;
       background-position: center center;
       border-left: 1px solid rgba(255, 255, 255, 0.1);
@@ -143,7 +138,7 @@
         background-color: rgba(255, 255, 255, 0.1);
       }
       &.stop {
-        background-image: url("../images/def-m.png");
+        background-image: url("../images/default/def-m.png");
       }
     }
   }
@@ -171,7 +166,7 @@
       line-height: 20px;
       height: 20px;
       font-size: 11px;
-      color: #636364;
+      color: #9a9a9a;
       text-align: center;
       overflow: hidden;
       white-space: nowrap;
